@@ -23,6 +23,14 @@ app.get("/health", (req,res) => {
   res.status(200).json({ MessagePort: "server is running"});
 });
 
+app.get("/", (req, res) => {
+  res.json({ message: "Backend is running" });
+});
+
+app.get("/test", (req, res) => {
+  res.json({ message: "Backend is working 🚀" });
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
