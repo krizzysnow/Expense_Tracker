@@ -1,0 +1,606 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #d0eee4;
+  color: #000000;
+  margin: 1px;
+  padding: 40px 20px;
+  display: flexbox;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 500px; 
+  background-color: #a0d6bc; 
+  border: 1px solid #85c478;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(70, 90, 82, 0.12);
+  margin: 0 auto;
+}
+
+h1, h2 {
+  text-shadow: 1px 1px 2px #ffffff;
+  text-align: center;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap; 
+}
+
+input {
+  flex: 1;
+  min-width: 150px; 
+  padding: 10px;
+  border: 1px solid #35a07a;
+  border-radius: 4px;
+  background-color: #fcfffd;
+  color: #2f3b36;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  transition: opacity 0.2s;
+}
+
+button[type="submit"], .add-btn {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+button[type="submit"]:hover {
+  background-color: #26572e;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 6px;
+  background: rgb(248, 252, 250);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #000000;
+  text-align: left;
+}
+
+th {
+  background-color: #f8fbf9;
+  color: #244b43;
+  font-weight: bold;
+}
+
+button.delete-btn {
+  padding: 6px 12px;
+  background-color: #ff1900;
+  color: white;
+}
+
+button.edit-btn {
+  padding: 6px 12px;
+  background-color: #000000;
+  color: white;
+  margin-right: 8px;
+}
+
+.expense-row:hover {
+  background-color: #89c5a8;
+}
+
+
+.auth-page {
+  display: grid;
+  grid-row: 1fr;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #85caa9; 
+  border: 1px solid #85c478;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 6px 120px rgb(300, 450, 255);
+}
+
+.auth-subtitle {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #2f3b36;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-form input {
+  width: 100%;
+}
+
+.auth-form button {
+  padding: 12px;
+  background-color: #4d8b7c;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
+
+.auth-error {
+  color: #ff1900;
+  background: #000000;
+  border: 1px solid #ff1900;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.auth-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.auth-footer a {
+  color: #000;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.logoutbutton {
+  background: #ff1900;
+  color: rgb(0, 0, 0);
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: bold;
+  float: right;
+}
+
+.welcome-msg {
+  font-style: italic;
+  font-size: 20px;
+  margin-top: 5px;
+  color: #000000;
+}
+
+.top-bar {
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.fade-in { transition: opacity 0.3s; opacity: 1; }
+.fade-out { transition: opacity 0.3s; opacity: 0; }
+
+/* Dashboard Error Alert */
+.error-alert {
+  background: rgb(170, 32, 32);
+  color: rgb(0, 0, 0);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #fcc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error-alert-close {
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #c33;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 0;
+}
+
+/* Expense Form Container */
+.expense-form-container {
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 32px;
+}
+
+.expense-form-container h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+/* Loading/Empty State Container */
+.state-container {
+  text-align: center;
+  padding: 40px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.state-message {
+  color: var(--text-secondary);
+}
+
+/* Validation Error in Form */
+.validation-error {
+  background: #fee;
+  color: #c33;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  border: 1px solid #fcc;
+  font-size: 14px;
+}
+
+/* Action Buttons Container */
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Expense Form Styling */
+.expense-form {
+  padding: 0;
+}
+
+.expense-form h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.expense-form button[type="submit"] {
+  font-weight: 600;
+}
+
+.cancel-btn {
+  background: #000000;
+  color: #ffffff;
+  padding: 10px 20px;
+  font-weight: 600;
+  margin-left: 12px;
+}
+
+.summary-card {
+  background: #70af92;
+  border: 1px solid #000000;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.summary-card h2 {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  color: #000000;
+  text-align: left;
+  text-shadow: none;
+}
+
+.total-amount {
+  margin: 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: #03853d;
+}
+
+/* ══════════════════════════════════════════
+   DASHBOARD 2-COLUMN LAYOUT
+══════════════════════════════════════════ */
+.dashboard-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+.dashboard-layout .app-container {
+  flex: 0 0 58%;
+  max-width: 58%;
+  margin: 0;
+}
+
+.right-panel {
+  flex: 0 0 40%;
+  max-width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: sticky;
+  top: 20px;
+}
+
+.breakdown-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Income Card ────────────────────────── */
+.income-card {
+  background: #a0d6bc;
+  border: 1px solid #85c478;
+  border-radius: 8px;
+  padding: 20px 22px;
+  color: #000000;
+  box-shadow: 0 4px 8px rgba(70, 90, 82, 0.12);
+}
+
+.income-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.income-label {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #244b43;
+}
+
+.income-edit-btn {
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.income-edit-btn:hover {
+  background: #26572e;
+}
+
+.income-amount {
+  font-size: 30px;
+  font-weight: 700;
+  color: #03853d;
+  letter-spacing: -0.5px;
+}
+
+.income-arrow {
+  display: inline-block;
+  background: transparent;
+  color: #03853d;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  font-size: 20px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.income-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.income-currency {
+  font-size: 20px;
+  color: #03853d;
+  font-weight: 600;
+}
+
+.income-input {
+  flex: 1;
+  background: #fcfffd;
+  border: 1px solid #35a07a;
+  border-radius: 4px;
+  color: #2f3b36;
+  padding: 7px 10px;
+  font-size: 16px;
+  min-width: 0;
+}
+.income-input:focus {
+  outline: none;
+  border-color: #03853d;
+}
+
+.income-save-btn {
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.income-save-btn:hover { background: #26572e; }
+.income-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.income-cancel-btn {
+  background: #ff1900;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.income-cancel-btn:hover { background: #cc1400; }
+
+/* ── Savings Card ──────────────────────── */
+.savings-card {
+  border-radius: 8px;
+  padding: 14px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  box-shadow: 0 4px 8px rgba(70, 90, 82, 0.12);
+}
+
+.savings-positive {
+  background: #a0d6bc;
+  border: 1px solid #85c478;
+}
+
+.savings-negative {
+  background: #ffcccc;
+  border: 1px solid #ff4d4d;
+}
+
+.savings-label {
+  font-size: 13px;
+  color: #244b43;
+  font-weight: 600;
+}
+
+.savings-amount {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.savings-positive .savings-amount { color: #03853d; }
+.savings-negative .savings-amount { color: #cc0000; }
+
+.savings-warning {
+  width: 100%;
+  font-size: 13px;
+  color: #cc0000;
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+/* ── Spending Breakdown Card ────────────── */
+.breakdown-card {
+  background: #a0d6bc;
+  border: 1px solid #85c478;
+  border-radius: 8px;
+  padding: 20px 22px;
+  color: #000000;
+  box-shadow: 0 4px 8px rgba(70, 90, 82, 0.12);
+}
+
+.breakdown-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 20px;
+  letter-spacing: 0.2px;
+  text-shadow: 1px 1px 2px #ffffff;
+  text-align: center;
+}
+
+.breakdown-empty {
+  color: #244b43;
+  font-size: 13px;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.breakdown-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.breakdown-row-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.breakdown-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
+}
+
+.breakdown-cat {
+  flex: 1;
+  font-size: 14px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.breakdown-amt {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.breakdown-track {
+  background: #89c5a8;
+  border-radius: 20px;
+  height: 7px;
+  overflow: hidden;
+}
+
+.breakdown-fill {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Responsive ─────────────────────────── */
+.breakdown-pie-chart {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background 0.3s ease;
+}
+
+@media (max-width: 820px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+  .dashboard-layout .app-container,
+  .right-panel {
+    flex: none;
+    max-width: 100%;
+    width: 100%;
+    position: static;
+  }
+}
