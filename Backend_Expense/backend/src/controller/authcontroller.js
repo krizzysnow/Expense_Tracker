@@ -1,44 +1,6 @@
 const db = require("../config/db");
 
-exports.getIncome = (req, res) => {
-  const userId = req.user.id;
-  const sql = "SELECT Income FROM expenses WHERE User_ID = ? LIMIT 1";
-
-  db.query(sql, [userId], (err, results) => {
-    if (err) {
-      console.error("[getIncome] DB error:", err.message);
-      return res.status(500).json({ message: "Database error", error: err.message });
-    }
-    if (results.length === 0) {
-      return res.status(200).json({ income: 0, message: "No expenses found yet" });
-    }
-    res.status(200).json({ income: parseFloat(results[0].Income) || 0 });
-  });
-};
-
-exports.updateIncome = (req, res) => {
-  const userId = req.user.id;
-  const { income } = req.body;
-
-  const parsed = parseFloat(income);
-  if (isNaN(parsed) || parsed < 0) {
-    return res.status(400).json({ message: "Invalid income value" });
-  }
-
-  const sql = "UPDATE expenses SET Income = ? WHERE User_ID = ?";
-
-  db.query(sql, [parsed, userId], (err, result) => {
-    if (err) {
-      console.error("[updateIncome] DB error:", err.message);
-      return res.status(500).json({ message: "Database error", error: err.message });
-    }
-    if (result.affectedRows === 0) {
-      return res.status(200).json({ message: "No expenses found to attach income to yet", income: parsed });
-    }
-    console.log(`[updateIncome] Income updated to ${parsed} for User_ID=${userId}`);
-    res.status(200).json({ message: "Income updated successfully", income: parsed });
-  });
-};
+// Removed getIncome and updateIncome logic as Income is no longer stored in expenses table.
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { randomUUID } = require("crypto");
