@@ -159,29 +159,7 @@ const ExpenseService = {
     }
   },
 
-  getIncome: async () => {
-    try {
-      console.log("[ExpenseService] Fetching income...");
-      const response = await apiService._get("/user/income");
-      console.log("[ExpenseService] Income response:", response);
-      return parseFloat(response.income) || 0;
-    } catch (error) {
-      console.error("[ExpenseService] Failed to fetch income:", error.message);
-      throw error;
-    }
-  },
-
-  updateIncome: async (income) => {
-    try {
-      console.log("[ExpenseService] Updating income to:", income);
-      const response = await apiService._put("/user/income", { income: parseFloat(income) });
-      console.log("[ExpenseService] Update income response:", response);
-      return parseFloat(response.income) || 0;
-    } catch (error) {
-      console.error("[ExpenseService] Failed to update income:", error.message);
-      throw error;
-    }
-  }
+  //Income is now managed in frontend localStorage/state.
 };
 
 export default ExpenseService;

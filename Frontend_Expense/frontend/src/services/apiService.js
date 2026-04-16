@@ -23,14 +23,14 @@ class ApiService {
 
     if (token && token !== "undefined" && token !== "null" && token.trim()) {
       headers.Authorization = `Bearer ${token}`;
-      this.log("AUTH", "✅ Token added to headers", {
+      this.log("AUTH", "Token added to headers", {
         tokenLength: token.length,
         tokenStart: token.substring(0, 20),
         tokenFormat: token.startsWith("eyJ") ? "JWT (valid format)" : "NOT JWT format - WARNING!",
         headerValue: `Bearer ${token.substring(0, 30)}...`
       });
     } else {
-      this.log("AUTH", "❌ No valid token found in localStorage", {
+      this.log("AUTH", "No valid token found in localStorage", {
         token: token,
         isUndefined: token === "undefined",
         isNull: token === "null"

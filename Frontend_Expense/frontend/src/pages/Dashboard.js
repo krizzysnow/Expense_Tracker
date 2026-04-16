@@ -4,6 +4,7 @@ import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
 import SpendingBreakdown from "../components/SpendingBreakdown";
 import ExpenseService from "../services/expenseService";
+import IncomeService from "../services/incomeService";
 
 function Dashboard() {
   const [expenses, setExpenses] = useState([]);
@@ -38,24 +39,15 @@ function Dashboard() {
     }
   }, []);
 
-  const loadIncome = useCallback(async () => {
-    try {
-      const fetchedIncome = await ExpenseService.getIncome();
-      setIncome(fetchedIncome);
-    } catch (err) {
-      console.warn("[Dashboard] Could not load income:", err.message);
-      setIncome(0);
-    }
-  }, []);
-
   useEffect(() => {
     loadExpenses();
-    loadIncome();
-  }, [loadExpenses, loadIncome]);
+    // Fetch income from backend
+    IncomeService.getIncome().then(setIncome);
+  }, [loadExpenses]);
 
   const handleIncomeUpdate = async (newIncome) => {
     try {
-      const saved = await ExpenseService.updateIncome(newIncome);
+      const saved = await IncomeService.setIncome(newIncome);
       setIncome(saved);
       setError(null);
     } catch (err) {
@@ -127,7 +119,7 @@ function Dashboard() {
         <header className="top-bar">
           <div>
             <h1>Expense Tracker</h1>
-            {user && <p className="welcome-msg">Welcome back, {user.name}</p>}
+            {user && <p className="welcome-msg">Welcome back, HI {user.name}!</p>}
           </div>
           <button className="logoutbutton" onClick={handleLogout}>
             LOGOUT
@@ -139,7 +131,7 @@ function Dashboard() {
             <div className="error-alert">
               <strong> Error: {error}</strong>
               <button className="error-alert-close" onClick={() => setError(null)}>
-                ×
+                
               </button>
             </div>
           )}
@@ -160,12 +152,12 @@ function Dashboard() {
 
           {loading ? (
             <div className="state-container">
-              <p className="state-message">⏳ Loading expenses...</p>
+              <p className="state-message"> Loading expenses...</p>
             </div>
           ) : expenses.length === 0 && !error ? (
             <div className="state-container">
               <p className="state-message">
-                📭 No expenses yet. Add your first expense above!
+                No expenses yet. Add your first expense above!
               </p>
             </div>
           ) : (
@@ -180,8 +172,8 @@ function Dashboard() {
           )}
         </main>
       </div>
-
-      {/* ── RIGHT COLUMN ── */}
+      {}
+      
       <div className="right-panel">
         <SpendingBreakdown
           expenses={expenses}
