@@ -1,7 +1,7 @@
 import React from "react";
-import { Navigate} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-const isVallidToken = (token) => {
+const isValidToken = (token) => {
   if (!token) return false;
   if (
     typeof token !== "string" ||
@@ -11,21 +11,25 @@ const isVallidToken = (token) => {
   ) {
     return false;
   }
+
   const parts = token.split(".");
   if (parts.length !== 3) {
     return false;
   }
+
   return true;
 };
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
 
-  if (!isVallidToken(token)) {
+  if (!isValidToken(token)) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     return <Navigate to="/" replace />;
   }
+
   return children;
 }
+
 export default ProtectedRoute;
