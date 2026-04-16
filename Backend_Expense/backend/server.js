@@ -14,7 +14,8 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://expense-tracker-mn6e.vercel.app"
+    "https://expense-tracker-mn6e.vercel.app",
+    "https://expense-tracker-iota-eosin-32.vercel.app"
   ],
   credentials: true
 }));
