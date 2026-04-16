@@ -11,14 +11,7 @@ const { notFound, errorHandler } = require("./src/middleware/errorMiddleware");
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:3000",
-    "https://expense-tracker-mn6e.vercel.app",
-    "https://expense-tracker-iota-eosin-32.vercel.app"
-  ],
-  credentials: true
-}));
+app.use(cors());
 
 app.use(express.json());
 
