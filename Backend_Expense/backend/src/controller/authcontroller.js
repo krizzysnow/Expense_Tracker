@@ -1,9 +1,8 @@
 const db = require("../config/db");
-
-// Removed getIncome and updateIncome logic as Income is no longer stored in expenses table.
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { randomUUID } = require("crypto");
+const { sendVerificationEmail } = require("../utils/emailService");
 
 exports.loginUser = (req, res) => {
   const { email, password } = req.body;
@@ -21,7 +20,7 @@ exports.loginUser = (req, res) => {
   }
 
   const sql =
-    "SELECT USER_ID, Name AS name, Email AS email, Password AS password FROM users WHERE Email = ? LIMIT 1";
+    "SELECT USER_ID, Name AS name, Email AS email, Password AS password, is_verified FROM users WHERE Email = ? LIMIT 1";
 
   db.query(sql, [email], async (err, results) => {
     if (err) {
@@ -38,6 +37,12 @@ exports.loginUser = (req, res) => {
     }
 
     const user = results[0];
+
+    if (!user.is_verified) {
+      return res.status(401).json({
+        message: "Please verify your email before logging in"
+      });
+    }
 
     if (!user.password) {
       return res.status(500).json({
@@ -106,6 +111,28 @@ exports.getCurrentUser = (req, res) => {
   });
 };
 
+exports.verifyEmail = (req, res) => {
+  const { token } = req.params;
+
+  if (!token) {
+    return res.status(400).json({ message: "Verification token is required" });
+  }
+
+  const sql = "UPDATE users SET is_verified = true, verification_token = NULL WHERE verification_token = ?";
+
+  db.query(sql, [token], (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: "Database error", error: err.message });
+    }
+
+    if (results.affectedRows === 0) {
+      return res.status(400).json({ message: "Invalid or expired verification token" });
+    }
+
+    res.status(200).json({ message: "Email verified successfully" });
+  });
+};
+
 exports.registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -128,15 +155,18 @@ exports.registerUser = async (req, res) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const userId = randomUUID();
-      const insertSql = "INSERT INTO users (User_ID, Name, Email, Password) VALUES (?, ?, ?, ?)";
+      const verificationToken = randomUUID();
+      const insertSql = "INSERT INTO users (User_ID, Name, Email, Password, verification_token, is_verified) VALUES (?, ?, ?, ?, ?, ?)";
 
-      db.query(insertSql, [userId, name, email, hashedPassword], (insertErr) => {
+      db.query(insertSql, [userId, name, email, hashedPassword, verificationToken, false], async (insertErr) => {
         if (insertErr) {
           return res.status(500).json({ message: "Database error during registration", error: insertErr.message });
         }
 
+        await sendVerificationEmail(email, verificationToken);
+
         res.status(201).json({
-          message: "User registered successfully",
+          message: "User registered successfully. Please verify your email.",
           userId
         });
       });

@@ -1,0 +1,9 @@
+{
+  "name": "expense-tracker",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cd Backend_Expense/backend && npm start",
+    "dev": "cd Backend_Expense/backend && npm run dev",
+    "install:all": "npm install && cd Backend_Expense/backend && npm install && cd Frontend_Expense/frontend && npm install"
+  }
+}
