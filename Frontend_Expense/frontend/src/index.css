@@ -1,14 +1,37 @@
 
+/* ── Global Variables & Reset ── */
+:root {
+  --bg-primary: #f0f7f4;
+  --bg-secondary: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --accent-primary: #10b981;
+  --accent-hover: #059669;
+  --danger-main: #ef4444;
+  --danger-hover: #dc2626;
+  --border-soft: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #d0eee4;
-  color: #000000;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
   margin: 0;
   padding: 40px 20px;
   display: flex;
   justify-content: center;
   min-height: 100vh;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {
@@ -20,96 +43,136 @@ body {
 
 .app-container {
   width: 100%;
-  max-width: 500px; 
-  background-color: #a0d6bc; 
-  border: 1px solid #85c478;
-  border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 4px 8px rgba(70, 90, 82, 0.12);
+  max-width: 500px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
   margin: 0 auto;
 }
 
-h1, h2 {
-  text-shadow: 1px 1px 2px #ffffff;
-  text-align: center;
-  color: #000000;
+h1, h2, h3 {
+  color: var(--text-main);
+  margin-top: 0;
   margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 24px;
 }
 
 form {
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
 
 input {
   flex: 1;
   min-width: 150px; 
-  padding: 10px;
-  border: 1px solid #35a07a;
-  border-radius: 4px;
-  background-color: #fcfffd;
-  color: #2f3b36;
+  padding: 12px 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background-color: #f8fafc;
+  color: var(--text-main);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
 }
 
 button {
-  font: inherit;
+  font-family: inherit;
+  font-weight: 600;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: none;
-  transition: opacity 0.2s;
+  transition: all 0.2s ease;
+  font-size: 14px;
 }
 
 button[type="submit"], .add-btn {
-  padding: 10px 20px;
-  background-color: #000000;
+  padding: 12px 24px;
+  background-color: var(--accent-primary);
   color: #ffffff;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
 }
 
-button[type="submit"]:hover {
-  background-color: #26572e;
+button[type="submit"]:hover, .add-btn:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 .table-container {
   width: 100%;
   overflow-x: auto;
-  border-radius: 6px;
-  background: rgb(248, 252, 250);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-sm);
 }
 
 table {
   width: 100%;
-  border-collapse: separate;
+  border-collapse: collapse;
 }
 
 th, td {
-  padding: 12px;
-  border-bottom: 1px solid #000000;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-soft);
   text-align: left;
+  font-size: 14px;
 }
 
 th {
-  background-color: #f8fbf9;
-  color: #244b43;
-  font-weight: bold;
+  background-color: #f8fafc;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.05em;
 }
 
 button.delete-btn {
-  padding: 6px 12px;
-  background-color: #ff1900;
+  padding: 8px 14px;
+  background-color: var(--danger-main);
   color: white;
+}
+button.delete-btn:hover {
+  background-color: var(--danger-hover);
 }
 
 button.edit-btn {
-  padding: 6px 12px;
-  background-color: #000000;
-  color: white;
+  padding: 8px 14px;
+  background-color: #f1f5f9;
+  color: var(--text-main);
   margin-right: 8px;
+  border: 1px solid var(--border-soft);
+}
+button.edit-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.expense-row {
+  transition: background-color 0.2s ease;
 }
 
 .expense-row:hover {
-  background-color: #89c5a8;
+  background-color: #f8fafc;
 }
 
 
@@ -181,24 +244,49 @@ button.edit-btn {
 }
 
 .logoutbutton {
-  background: #ff1900;
-  color: rgb(0, 0, 0);
+  background: var(--bg-secondary);
+  color: var(--danger-main);
+  border: 1px solid var(--danger-main);
   padding: 8px 16px;
-  font-size: 12px;
-  font-weight: bold;
-  float: right;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: flex-start;
+  min-height: 36px;
+  transition: all 0.2s ease;
+}
+
+.logoutbutton:hover {
+  background: var(--danger-main);
+  color: #ffffff;
 }
 
 .welcome-msg {
-  font-style: italic;
-  font-size: 20px;
-  margin-top: 5px;
-  color: #000000;
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-weight: 500;
 }
 
 .top-bar {
-  overflow: hidden;
-  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.top-bar > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.top-bar h1 {
+  margin-bottom: 4px;
 }
 
 .fade-in { transition: opacity 0.3s; opacity: 1; }
@@ -229,29 +317,32 @@ button.edit-btn {
 
 /* Expense Form Container */
 .expense-form-container {
-  background: var(--card-bg);
+  background: var(--bg-secondary);
   padding: 24px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  margin-bottom: 32px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
 }
 
 .expense-form-container h2 {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  font-size: 18px;
 }
 
 /* Loading/Empty State Container */
 .state-container {
   text-align: center;
   padding: 40px;
-  background: var(--card-bg);
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border-soft);
 }
 
 .state-message {
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 /* Validation Error in Form */
@@ -288,35 +379,43 @@ button.edit-btn {
 }
 
 .cancel-btn {
-  background: #000000;
-  color: #ffffff;
-  padding: 10px 20px;
+  background: #f1f5f9;
+  color: var(--text-main);
+  border: 1px solid var(--border-soft);
+  padding: 12px 24px;
   font-weight: 600;
   margin-left: 12px;
 }
 
+.cancel-btn:hover {
+  background: #e2e8f0;
+}
+
 .summary-card {
-  background: #70af92;
-  border: 1px solid #000000;
-  border-radius: 12px;
-  padding: 20px;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, #0d9488 100%);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 24px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+  color: #ffffff;
 }
 
 .summary-card h2 {
-  margin: 0 0 10px 0;
-  font-size: 20px;
-  color: #000000;
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
   text-align: left;
   text-shadow: none;
+  font-weight: 500;
 }
 
 .total-amount {
   margin: 0;
-  font-size: 28px;
-  font-weight: bold;
-  color: #03853d;
+  font-size: 36px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
 }
 
 /* ══════════════════════════════════════════
@@ -324,12 +423,12 @@ button.edit-btn {
 ══════════════════════════════════════════ */
 .dashboard-layout {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   align-items: flex-start;
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 12px;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -357,62 +456,54 @@ button.edit-btn {
 
 /* ── Income Card ────────────────────────── */
 .income-card {
-  background: #a0d6bc;
-  border: 1px solid #85c478;
-  border-radius: 8px;
-  padding: 20px 22px;
-  color: #000000;
-  box-shadow: 0 4px 8px rgba(70, 90, 82, 0.12);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  color: var(--text-main);
+  box-shadow: var(--shadow-md);
 }
 
 .income-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .income-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: #244b43;
+  color: var(--text-muted);
 }
 
 .income-edit-btn {
-  background: #000000;
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 14px;
+  background: #f8fafc;
+  color: var(--text-main);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 .income-edit-btn:hover {
-  background: #26572e;
+  background: #e2e8f0;
 }
 
 .income-amount {
-  font-size: 30px;
-  font-weight: 700;
-  color: #03853d;
-  letter-spacing: -0.5px;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
 }
 
 .income-arrow {
   display: inline-block;
-  background: transparent;
-  color: #03853d;
-  border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  line-height: 26px;
-  text-align: center;
-  font-size: 20px;
-  margin-right: 4px;
+  color: var(--accent-primary);
+  font-size: 24px;
+  margin-right: 6px;
   vertical-align: middle;
 }
 
@@ -431,79 +522,78 @@ button.edit-btn {
 
 .income-input {
   flex: 1;
-  background: #fcfffd;
-  border: 1px solid #35a07a;
-  border-radius: 4px;
-  color: #2f3b36;
-  padding: 7px 10px;
+  background: #f8fafc;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  padding: 10px 14px;
   font-size: 16px;
   min-width: 0;
 }
 .income-input:focus {
   outline: none;
-  border-color: #03853d;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
 }
 
 .income-save-btn {
-  background: #000000;
+  background: var(--accent-primary);
   color: #ffffff;
   border: none;
-  border-radius: 4px;
-  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
   font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
+  font-weight: 600;
 }
-.income-save-btn:hover { background: #26572e; }
-.income-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.income-save-btn:hover { background: var(--accent-hover); }
 
 .income-cancel-btn {
-  background: #ff1900;
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 14px;
+  background: #f1f5f9;
+  color: var(--text-main);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
   font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
+  font-weight: 600;
 }
-.income-cancel-btn:hover { background: #cc1400; }
+.income-cancel-btn:hover { background: #e2e8f0; }
 
 /* ── Savings Card ──────────────────────── */
 .savings-card {
-  border-radius: 8px;
-  padding: 14px 22px;
+  border-radius: var(--radius-lg);
+  padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
-  box-shadow: 0 4px 8px rgba(70, 90, 82, 0.12);
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-soft);
 }
 
 .savings-positive {
-  background: #a0d6bc;
-  border: 1px solid #85c478;
+  border-left: 4px solid var(--accent-primary);
 }
 
 .savings-negative {
-  background: #ffcccc;
-  border: 1px solid #ff4d4d;
+  border-left: 4px solid var(--danger-main);
 }
 
 .savings-label {
-  font-size: 13px;
-  color: #244b43;
+  font-size: 14px;
+  color: var(--text-muted);
   font-weight: 600;
 }
 
 .savings-amount {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-.savings-positive .savings-amount { color: #03853d; }
-.savings-negative .savings-amount { color: #cc0000; }
+.savings-positive .savings-amount { color: var(--accent-primary); }
+.savings-negative .savings-amount { color: var(--danger-main); }
 
 .savings-warning {
   width: 100%;
@@ -515,70 +605,67 @@ button.edit-btn {
 
 /* ── Spending Breakdown Card ────────────── */
 .breakdown-card {
-  background: #a0d6bc;
-  border: 1px solid #85c478;
-  border-radius: 8px;
-  padding: 20px 22px;
-  color: #000000;
-  box-shadow: 0 4px 8px rgba(70, 90, 82, 0.12);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  color: var(--text-main);
+  box-shadow: var(--shadow-md);
 }
 
 .breakdown-title {
   font-size: 16px;
-  font-weight: bold;
-  color: #000000;
-  margin-bottom: 20px;
-  letter-spacing: 0.2px;
-  text-shadow: 1px 1px 2px #ffffff;
-  text-align: center;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 24px;
+  text-shadow: none;
+  text-align: left;
 }
 
 .breakdown-empty {
-  color: #244b43;
-  font-size: 13px;
+  color: var(--text-muted);
+  font-size: 14px;
   text-align: center;
-  padding: 12px 0;
+  padding: 20px 0;
 }
 
 .breakdown-rows {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .breakdown-row-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
 .breakdown-dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
 }
 
 .breakdown-cat {
   flex: 1;
   font-size: 14px;
-  color: #000000;
-  font-weight: bold;
+  color: var(--text-main);
+  font-weight: 600;
 }
 
 .breakdown-amt {
   font-size: 14px;
-  font-weight: bold;
-  color: #000000;
-  white-space: nowrap;
+  font-weight: 700;
+  color: var(--text-main);
 }
 
 .breakdown-track {
-  background: #89c5a8;
+  background: #f1f5f9;
   border-radius: 20px;
-  height: 7px;
+  height: 8px;
   overflow: hidden;
 }
 
@@ -588,7 +675,7 @@ button.edit-btn {
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── Responsive ─────────────────────────── */
+/* ── Pie Chart ─────────────────────────── */
 .breakdown-pie-chart {
   width: 200px;
   height: 200px;
@@ -598,9 +685,13 @@ button.edit-btn {
   transition: background 0.3s ease;
 }
 
+/* ══════════════════════════════════════════
+   RESPONSIVE — Tablet (≤ 820px)
+══════════════════════════════════════════ */
 @media (max-width: 820px) {
   .dashboard-layout {
     flex-direction: column;
+    padding: 0 16px;
   }
   .dashboard-layout .app-container,
   .right-panel {
@@ -608,6 +699,223 @@ button.edit-btn {
     max-width: 100%;
     width: 100%;
     position: static;
+  }
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — Mobile (≤ 600px)
+══════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  /* ── Page body ── */
+  body {
+    padding: 0;
+    align-items: flex-start;
+    background-color: var(--bg-secondary);
+  }
+
+  /* ── Dashboard wrapper ── */
+  .dashboard-layout {
+    width: 100%;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  /* ── Main card ── */
+  .app-container {
+    max-width: 100%;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  /* ── Top bar: stack title + logout cleanly ── */
+  .top-bar {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .top-bar h1 {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+
+  .welcome-msg {
+    font-size: 14px;
+  }
+
+  .logoutbutton {
+    font-size: 12px;
+    padding: 8px 16px;
+    min-height: 38px;
+    border-radius: var(--radius-md);
+  }
+
+  /* ── Summary card ── */
+  .summary-card {
+    padding: 24px 20px;
+    margin-bottom: 20px;
+    border-radius: var(--radius-lg);
+  }
+
+  .summary-card h2 {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .total-amount {
+    font-size: 32px;
+  }
+
+  /* ── Expense form container ── */
+  .expense-form-container {
+    padding: 20px 16px;
+    margin-bottom: 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ── Expense form: stack all fields vertically ── */
+  .expense-form,
+  form.expense-form {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+
+  .expense-form input,
+  .expense-form button[type="submit"],
+  .expense-form .cancel-btn {
+    width: 100%;
+    min-width: 0;
+    flex: none;
+  }
+
+  .expense-form button[type="submit"],
+  .expense-form .cancel-btn {
+    min-height: 48px;
+    font-size: 15px;
+    border-radius: var(--radius-md);
+  }
+
+  .cancel-btn {
+    margin-left: 0;
+    margin-top: 4px;
+  }
+
+  /* ── Expense form h2 ── */
+  .expense-form h2 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* ── State / loading container ── */
+  .state-container {
+    padding: 24px 16px;
+    min-height: auto;
+  }
+
+  /* ── Table ── */
+  .table-container {
+    border-radius: var(--radius-md);
+    box-shadow: none;
+    border: 1px solid var(--border-soft);
+  }
+
+  th, td {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  /* ── Action buttons in table ── */
+  .action-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  button.edit-btn,
+  button.delete-btn {
+    width: 100%;
+    min-height: 40px;
+    margin-right: 0;
+    font-size: 13px;
+    border-radius: var(--radius-md);
+  }
+
+  /* ── Right panel (Spending Breakdown) ── */
+  .right-panel {
+    gap: 16px;
+  }
+
+  .breakdown-card {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .breakdown-title {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .breakdown-pie-chart {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 20px;
+  }
+
+  /* ── Income card ── */
+  .income-card {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .income-amount {
+    font-size: 28px;
+  }
+
+  .income-edit-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .income-save-btn,
+  .income-cancel-btn {
+    min-height: 44px;
+    flex: 1;
+    font-size: 14px;
+    border-radius: var(--radius-md);
+  }
+
+  /* ── Savings card ── */
+  .savings-card {
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .savings-amount {
+    font-size: 22px;
+  }
+
+  /* ── Error alert ── */
+  .error-alert {
+    font-size: 14px;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+  }
+
+  /* ── Validation error ── */
+  .validation-error {
+    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
   }
 }
 
