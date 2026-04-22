@@ -3,28 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import authService from "../services/authService";
 
 function Login() {
-  const [formData, setFormData] = useState({
-    Email: "",
-    Password: ""
-  });
-
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
+  const [formData, setFormData] = useState({ Email: "", Password: "" });
+  const [error, setError]       = useState("");
+  const [loading, setLoading]   = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/dashboard");
-    }
+    if (localStorage.getItem("token")) navigate("/dashboard");
   }, [navigate]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,43 +21,25 @@ function Login() {
     setLoading(true);
 
     try {
-      console.log("[Login]  Submitting login form with:", {
-        email: formData.Email,
-        password: formData.Password ? "***" : "EMPTY"
-      });
-
       const data = await authService.login(formData);
 
-      console.log("[Login]  Backend response received:", {
-        hasToken: !!data.token,
-        tokenLength: data.token ? data.token.length : 0,
-        tokenPreview: data.token ? data.token.substring(0, 50) : "NONE",
-        user: data.user,
-        fullResponse: data
-      });
-
-      // Handle different token field names from backend
-      const tokenValue = data.token || data.access_token || data.accessToken;
-      
-      if (!tokenValue) {
-        throw new Error("No token received from backend. Backend returned: " + JSON.stringify(data));
-      }
-
-      console.log("[Login]  Token found, saving to localStorage...");
-
-      localStorage.setItem("token", tokenValue);
+      localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-
-      console.log("[Login]  Token saved. Verification:");
-      console.log("   Saved token length:", localStorage.getItem("token").length);
-      console.log("   Saved token preview:", localStorage.getItem("token").substring(0, 50));
-      console.log("   Saved token format starts with 'eyJ':", localStorage.getItem("token").startsWith("eyJ"));
-
-      console.log("[Login]  Navigating to dashboard...");
       navigate("/dashboard");
     } catch (err) {
       const errorMsg = err.message || "Login failed";
-      console.error("[Login]  Error:", errorMsg);
+
+      // If backend says email not verified → redirect to OTP page
+      if (
+        errorMsg.toLowerCase().includes("verify") ||
+        errorMsg.toLowerCase().includes("verified")
+      ) {
+        navigate("/verify-otp", {
+          state: { email: formData.Email }
+        });
+        return;
+      }
+
       setError(errorMsg);
     } finally {
       setLoading(false);
@@ -85,17 +56,16 @@ function Login() {
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <input
-            type="Email"
+            type="email"
             name="Email"
             placeholder="Enter email"
             value={formData.Email}
             onChange={handleChange}
             required
-            autoComplete="Email"
+            autoComplete="email"
           />
-
           <input
-            type="Password"
+            type="password"
             name="Password"
             placeholder="Enter password"
             value={formData.Password}
@@ -103,9 +73,8 @@ function Login() {
             required
             autoComplete="current-password"
           />
-
           <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Logging in…" : "Login"}
           </button>
         </form>
 

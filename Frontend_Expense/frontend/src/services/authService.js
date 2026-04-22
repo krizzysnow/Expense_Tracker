@@ -1,84 +1,41 @@
 import apiService from "./apiService";
 
-const normalizeAuthPayload = (data = {}) => ({
-  name: data.name ?? data.Name ?? "",
-  email: data.email ?? data.Email ?? "",
-  password: data.password ?? data.Password ?? ""
-});
-
-
-const normalizeAuthResponse = (response) => {
-  console.log("[authService] Normalizing response:", response);
-
-  
-  const token = 
-    response.token || 
-    response.access_token || 
-    response.accessToken || 
-    response.Authorization ||
-    response.data?.token ||
-    response.data?.access_token;
-
-
-  const user = 
-    response.user || 
-    response.User || 
-    response.data?.user ||
-    response.data?.User || 
-    {
-      id: response.id || response.userId,
-      email: response.email || response.Email,
-      name: response.name || response.Name
-    };
-
-  console.log("[authService] Normalized response:", {
-    tokenFound: !!token,
-    tokenPreview: token ? `${token.substring(0, 30)}...` : "NOT FOUND",
-    user: user
-  });
-
-  if (!token) {
-    throw new Error(
-      `No token found in backend response. Backend returned: ${JSON.stringify(response)}`
-    );
-  }
-
-  return { token, user };
-};
-
 const authService = {
   login: async (credentials) => {
-    const { email, password } = normalizeAuthPayload(credentials);
+    const email = (credentials.email ?? credentials.Email ?? "").trim();
+    const password = credentials.password ?? credentials.Password ?? "";
 
-    console.log("[authService] Logging in with email:", email);
+    const response = await apiService._post("/auth/login", { email, password });
 
-    const response = await apiService._post("/auth/login", {
-      email: email.trim(),
-      password
-    });
+    const token =
+      response.token || response.access_token || response.accessToken;
 
-    console.log("[authService] Login response received:", {
-      hasToken: !!response.token,
-      responseKeys: Object.keys(response)
-    });
+    if (!token) {
+      throw new Error("No token received from backend.");
+    }
 
-    
-    return normalizeAuthResponse(response);
+    return {
+      token,
+      user: response.user || { email }
+    };
   },
 
   register: async (userData) => {
-    const { name, email, password } = normalizeAuthPayload(userData);
+    const name     = (userData.name     ?? userData.Name     ?? "").trim();
+    const email    = (userData.email    ?? userData.Email    ?? "").trim();
+    const password =  userData.password ?? userData.Password ?? "";
 
-    console.log("[authService] Registering with email:", email);
+    const response = await apiService._post("/auth/register", { name, email, password });
+    return response; // { message, email, emailSent, devOtp? }
+  },
 
-    const response = await apiService._post("/auth/register", {
-      name: name.trim(),
-      email: email.trim(),
-      password
-    });
+  verifyOTP: async (email, otp) => {
+    const response = await apiService._post("/auth/verify-otp", { email, otp });
+    return response;
+  },
 
-    console.log("[authService] Register response received");
-
+  resendOTP: async (email) => {
+    const response = await apiService._post("/auth/resend-otp", { email });
     return response;
   }
 };
