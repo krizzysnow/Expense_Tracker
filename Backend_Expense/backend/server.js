@@ -14,41 +14,44 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
 
-  // Current Vercel frontend URL from your screenshot
-  "https://expense-tracker-b1ond-eight-97.vercel.app",
+  // Correct current Vercel frontend URL
+  "https://expense-tracker-blond-eight-97.vercel.app",
 
-  // Previous Vercel frontend URL, safe to keep if you used it before
+  // Keep previous Vercel URLs if needed
   "https://expense-tracker-iota-eosin-32.vercel.app",
 
-  // Custom production domain, if active
+  // Custom domain
   "https://expenseflow.in",
+  "https://www.expenseflow.in",
 
   // Render environment variable
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow Postman, curl, server health checks, and same-origin requests
-      if (!origin) {
-        return callback(null, true);
-      }
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) {
+      return callback(null, true);
+    }
 
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
 
-      console.log("Blocked by CORS:", origin);
-      return callback(new Error(`Not allowed by CORS: ${origin}`));
-    },
-    credentials: true
-  })
-);
+    console.log("Blocked by CORS:", origin);
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+
+// Handle browser preflight requests
+app.options(/.*/, cors(corsOptions));
 
 app.use(express.json());
 
-// Health / smoke-test routes
+// Health route
 app.get("/health", (req, res) => {
   res.status(200).json({
     message: "server is running",
@@ -73,7 +76,6 @@ app.use("/api/finance", incomeRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-// Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
