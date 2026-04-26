@@ -6,6 +6,7 @@ const cors = require("cors");
 const expenseRoutes = require("./src/route/expenseRoute");
 const authRoutes = require("./src/route/authRoute");
 const incomeRoutes = require("./src/route/incomeRoute");
+const debugRoutes = require("./src/route/debugRoute");
 const { notFound, errorHandler } = require("./src/middleware/errorMiddleware");
 
 const app = express();
@@ -71,6 +72,10 @@ app.get("/test", (req, res) => {
 app.use("/api", expenseRoutes);
 app.use("/api", authRoutes);
 app.use("/api/finance", incomeRoutes);
+
+// TEMPORARY LOCAL DEBUG ROUTE
+// Remove before production deploy or protect with admin auth.
+app.use("/api/debug", debugRoutes);
 
 // Error middleware
 app.use(notFound);
