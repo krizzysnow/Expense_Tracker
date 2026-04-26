@@ -132,6 +132,12 @@ button:active { transform: translateY(0); }
 .auth-footer a { color: var(--accent-primary); font-weight: 600; text-decoration: none; transition: color 0.2s; }
 .auth-footer a:hover { color: #818cf8; text-decoration: underline; }
 
+.auth-options { display: flex; justify-content: space-between; margin-top: 16px; font-size: 14px; }
+.text-link { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0; font-weight: 500; font-family: inherit; }
+.text-link:hover { color: var(--text-main); text-decoration: underline; }
+.danger-link { color: #fda4af; }
+.danger-link:hover { color: var(--danger-hover); }
+
 /* ── Top Bar ── */
 .top-bar { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 28px; }
 .top-bar h1 { margin-bottom: 6px; font-size: 30px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -268,8 +274,8 @@ button.delete-btn:hover {
 .otp-icon { font-size: 54px; margin-bottom: 16px; }
 .otp-title { margin-bottom: 12px; }
 .otp-email { color: var(--accent-primary); font-weight: 600; }
-.otp-inputs { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; width: 100%; max-width: 100%; }
-.otp-box { width: calc((100% - 40px) / 6) !important; max-width: 48px; height: 56px !important; flex: 1 1 auto !important; text-align: center; font-size: 24px; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.2) !important; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: white; transition: all 0.2s; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3); }
+.otp-inputs { display: flex; justify-content: space-between; margin-bottom: 24px; width: 100%; max-width: 100%; }
+.otp-box { width: 14% !important; aspect-ratio: 1 / 1.25; height: auto !important; max-width: 48px; text-align: center; font-size: 24px; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.2) !important; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: white; transition: all 0.2s; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3); }
 .otp-box:focus { border-color: #6366f1 !important; box-shadow: 0 0 12px rgba(99, 102, 241, 0.5), inset 0 1px 3px rgba(0,0,0,0.3); transform: scale(1.05); background: rgba(99, 102, 241, 0.1); }
 .otp-box--filled { border-color: rgba(255,255,255,0.4) !important; background: rgba(255, 255, 255, 0.1); }
 .otp-verify-btn { width: 100%; padding: 16px; font-size: 16px; letter-spacing: 1px; margin-bottom: 16px; }
@@ -317,5 +323,5 @@ button.delete-btn:hover {
     text-align: center;
   }
   
-  .otp-box { height: 50px !important; font-size: 22px; border-radius: 6px; }
+  .otp-box { height: auto !important; font-size: 22px; border-radius: 6px; }
 }
