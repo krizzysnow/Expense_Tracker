@@ -37,6 +37,18 @@ const authService = {
   resendOTP: async (email) => {
     const response = await apiService._post("/auth/resend-otp", { email });
     return response;
+  },
+
+  forgotPassword: async (email) => {
+    return await apiService._post("/auth/forgot-password", { email });
+  },
+
+  resetPassword: async (email, otp, newPassword) => {
+    return await apiService._post("/auth/reset-password", { email, otp, newPassword });
+  },
+
+  deleteAccount: async () => {
+    return await apiService._delete("/auth/delete-account");
   }
 };
 

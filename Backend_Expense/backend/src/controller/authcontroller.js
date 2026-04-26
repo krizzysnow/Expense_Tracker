@@ -233,3 +233,91 @@ exports.resendOTP = async (req, res) => {
 exports.verifyEmail = (req, res) => {
   res.status(410).json({ message: "This verification method is no longer supported. Please use OTP verification." });
 };
+
+// ── Forgot Password ───────────────────────────────────────────────────────────
+exports.forgotPassword = (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: "Email is required" });
+
+  const sql = "SELECT USER_ID FROM users WHERE Email = ? LIMIT 1";
+  db.query(sql, [email], async (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err.message });
+    
+    if (results.length === 0) {
+      return res.status(200).json({ message: "If the email is registered, an OTP has been sent." });
+    }
+
+    const user = results[0];
+    const otp = generateOTP();
+    const otpExpiry = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
+
+    const updateSql = "UPDATE users SET reset_otp_code = ?, reset_otp_expires_at = ? WHERE USER_ID = ?";
+    db.query(updateSql, [otp, otpExpiry, user.USER_ID], async (updateErr) => {
+      if (updateErr) return res.status(500).json({ message: "Database error", error: updateErr.message });
+
+      await sendOTPEmail(email, otp); 
+      res.status(200).json({ message: "If the email is registered, an OTP has been sent." });
+    });
+  });
+};
+
+// ── Reset Password ────────────────────────────────────────────────────────────
+exports.resetPassword = (req, res) => {
+  const { email, otp, newPassword } = req.body;
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({ message: "Email, OTP, and new password are required" });
+  }
+
+  if (newPassword.length < 6) {
+     return res.status(400).json({ message: "Password must be at least 6 characters long" });
+  }
+
+  const sql = "SELECT USER_ID, reset_otp_code, reset_otp_expires_at FROM users WHERE Email = ? LIMIT 1";
+  db.query(sql, [email], async (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err.message });
+
+    if (results.length === 0) {
+      return res.status(400).json({ message: "Invalid request" });
+    }
+
+    const user = results[0];
+
+    if (!user.reset_otp_code || String(user.reset_otp_code) !== String(otp).trim()) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    const now = new Date();
+    const expiresAt = new Date(user.reset_otp_expires_at);
+    if (now > expiresAt) {
+      return res.status(400).json({ message: "OTP has expired. Please request a new one." });
+    }
+
+    try {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const updateSql = "UPDATE users SET Password = ?, reset_otp_code = NULL, reset_otp_expires_at = NULL WHERE USER_ID = ?";
+      
+      db.query(updateSql, [hashedPassword, user.USER_ID], (updateErr) => {
+        if (updateErr) return res.status(500).json({ message: "Database error", error: updateErr.message });
+        res.status(200).json({ message: "Password has been successfully reset" });
+      });
+    } catch (hashError) {
+      res.status(500).json({ message: "Error hashing password", error: hashError.message });
+    }
+  });
+};
+
+// ── Delete Account ────────────────────────────────────────────────────────────
+exports.deleteAccount = (req, res) => {
+  const userId = req.user.id;
+
+  const sql = "DELETE FROM users WHERE USER_ID = ?";
+  db.query(sql, [userId], (err, results) => {
+    if (err) return res.status(500).json({ message: "Database error", error: err.message });
+    
+    if (results.affectedRows === 0) {
+       return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Account successfully deleted" });
+  });
+};

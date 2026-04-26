@@ -79,8 +79,7 @@ function Login() {
         </form>
 
         <div className="auth-options">
-          <button type="button" className="text-link" onClick={() => alert("Reset Password coming soon!")}>Forgot Password?</button>
-          <button type="button" className="text-link danger-link" onClick={() => alert("Delete Account coming soon!")}>Delete Account</button>
+          <Link to="/forgot-password" className="text-link" style={{ textDecoration: 'none' }}>Forgot Password?</Link>
         </div>
 
         <p className="auth-footer">

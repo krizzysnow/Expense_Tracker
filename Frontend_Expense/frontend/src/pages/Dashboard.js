@@ -5,6 +5,7 @@ import ExpenseList from "../components/ExpenseList";
 import SpendingBreakdown from "../components/SpendingBreakdown";
 import ExpenseService from "../services/expenseService";
 import IncomeService from "../services/incomeService";
+import authService from "../services/authService";
 
 function Dashboard() {
   const [expenses, setExpenses] = useState([]);
@@ -13,6 +14,7 @@ function Dashboard() {
   const [editingExpense, setEditingExpense] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const navigate = useNavigate();
 
   const userString = localStorage.getItem("user");
@@ -112,6 +114,18 @@ function Dashboard() {
     navigate("/");
   };
 
+  const handleDeleteAccount = async () => {
+    try {
+      await authService.deleteAccount();
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Failed to delete account");
+      setShowDeleteModal(false);
+    }
+  };
+
   return (
     <div className="dashboard-layout">
       {/* ── LEFT COLUMN ── */}
@@ -121,10 +135,26 @@ function Dashboard() {
             <h1>Expense Tracker</h1>
             {user && <p className="welcome-msg">Welcome back, HI {user.name}!</p>}
           </div>
-          <button className="logoutbutton" onClick={handleLogout}>
-            LOGOUT
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button className="logoutbutton" onClick={() => setShowDeleteModal(true)} style={{ background: 'transparent', border: 'none', textDecoration: 'underline' }}>
+              Delete Account
+            </button>
+            <button className="logoutbutton" onClick={handleLogout}>
+              LOGOUT
+            </button>
+          </div>
         </header>
+
+        {showDeleteModal && (
+          <div className="state-container" style={{ borderColor: 'var(--danger-main)', marginBottom: '24px' }}>
+            <h3 style={{ color: 'var(--danger-main)' }}>Delete Account</h3>
+            <p>Are you sure? This will permanently delete your account, expenses, and income data.</p>
+            <div className="action-buttons" style={{ justifyContent: 'center', marginTop: '16px' }}>
+              <button className="edit-btn" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+              <button className="delete-btn" onClick={handleDeleteAccount}>Yes, Delete My Account</button>
+            </div>
+          </div>
+        )}
 
         <main>
           {error && (
