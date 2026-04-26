@@ -125,7 +125,7 @@ function ExpenseForm({
   return (
     <form onSubmit={handleSubmit} className="expense-form">
       <h2>
-        {editingExpense ? " Edit Expense" : " *Add New Expense* "}
+        {editingExpense ? "Edit Expense" : "Add New Expense"}
       </h2>
 
        {}
@@ -161,7 +161,7 @@ function ExpenseForm({
       <input
         type="text"
         name="category"
-        placeholder="Category (e.g., Food, Transport, Entertainment)"
+        placeholder="Category (e.g., Food, Travel, Shopping, Health, Entertainment)"
         value={formData.category}
         onChange={handleChange}
         required
