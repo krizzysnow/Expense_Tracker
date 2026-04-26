@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS users (
     Password VARCHAR(255) NOT NULL,
     otp_code VARCHAR(10),
     otp_expires_at DATETIME,
+    reset_otp_code VARCHAR(10),
+    reset_otp_expires_at DATETIME,
     is_verified BOOLEAN DEFAULT FALSE,
     Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
